@@ -5,9 +5,10 @@ if(isset($argv))
 	$word = $argv[1];
 if(isset($_REQUEST['word'])){
 	$word = $_REQUEST['word'];
-	echo '<form><input type="text" name="word"><input type="submit"></form><pre>';
 }
 ?>
+<form><input type="text" name="word"><input type="submit"></form>
+<pre>
 soundexes for <?php echo $word;?>:
 
 Library		Output
