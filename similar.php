@@ -1,6 +1,28 @@
 <?php
-require_once('word_library.php');
-echo '<form><input type="text" name="word"><input type="submit"></form><pre>';
+// don't just scan the folder, this is safer
+$libraries = [
+  'architecture',
+  'default'
+];
+$library = 'default';
+if(isset($_REQUEST['library'])){
+  $library = $_REQUEST['library'];
+}
+if(in_array($library,$libraries)){
+  require_once("libraries/$library.php");
+}else{
+  require_once('libraries/default.php');
+}
+if(!isset($_REQUEST['output']) || ($_REQUEST['output']!='json')){
+  echo '<form>'.
+    'check <input type="text" name="word">'.
+    ' against <select name="library">';
+  foreach($libraries as $lib){
+    echo "<option ".($library==$lib ? "selected ":"")."value=\"$lib\">$lib</option>";
+  }
+    echo '</select> library'.
+    '<input type="submit"></form><pre>';
+}
 if(!isset($_REQUEST['word']))
   die();
 $word = $_REQUEST['word'];
@@ -9,8 +31,6 @@ function cmp($a,$b){
     return 0;
   return($a < $b)? -1 : 1;
 }
-echo "$word\n";
-echo "--------------------\n";
 function word_in_lib($word,$lib){
   $metaphone = salMetaphone($word);
   if(isset($lib[$metaphone])){
@@ -38,10 +58,16 @@ foreach($possibilities as $possible){
   $distances[$possible] = $diff;
 }
 uasort($distances,"cmp");
-foreach($distances as $possibility=>$score){
-  if($score==0){
-    echo "spelled correctly";
-    break;
+if(isset($_REQUEST['output']) && ($_REQUEST['output']=='json')){
+  echo json_encode($distances,JSON_PRETTY_PRINT);
+}else{
+  echo "$word\n";
+  echo "--------------------\n";
+  foreach($distances as $possibility=>$score){
+    if($score==0){
+      echo "spelled correctly";
+      break;
+    }
+    echo "$possibility\t$score\n";
   }
-  echo "$possibility\t$score\n";
 }

@@ -3,9 +3,13 @@ function salMetaphone($word){
 	$word = strtolower($word);
 	$word = preg_replace('/[^a-z ]/','',$word);
 	$word = preg_replace('/(\w)\1+/','\1',$word);
+	$word = preg_replace('/scen/','sen',$word);
 	$word = preg_replace('/sch/','sk',$word);
+	$word = preg_replace('/rh/','r',$word);
 	$word = preg_replace('/ng/','n',$word);
 	$word = preg_replace('/ck/','k',$word);
+	$word = preg_replace('/[cs]e$/','s',$word);
+	$word = preg_replace('/ble$/','bl',$word);
 	$word = preg_replace('/kn/','n',$word);
 	$word = preg_replace('/dg/','j',$word);
 	$word = preg_replace('/wr/','r',$word);
@@ -16,6 +20,7 @@ function salMetaphone($word){
 	$word = preg_replace('/ph/','f',$word);
 	$word = preg_replace('/ou?(gh)?|ow/','o',$word);
 	$word = preg_replace('/ou/','o',$word);
+	$word = preg_replace('/eau/','o',$word);
 	$word = preg_replace('/[ae]ight/','8',$word);
 	$word = preg_replace('/igh/','',$word);;
 	if(strlen($word) > 2){
