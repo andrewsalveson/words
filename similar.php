@@ -54,7 +54,7 @@ function word_in_lib($word,$lib){
 $possibilities = word_in_lib($word,$metaphones);
 $distances = [];
 foreach($possibilities as $possible){
-  $diff = levenshtein($possible,$word);
+  $diff = levenshtein(strtolower($possible),strtolower($word));
   $distances[$possible] = $diff;
 }
 uasort($distances,"cmp");
